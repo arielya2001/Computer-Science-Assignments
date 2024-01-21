@@ -1,0 +1,166 @@
+import java.util.Scanner;
+/**
+ * Introduction to Computer Science, Ariel University, Ex1 (manual Example + a Template for your solution)
+ * See: https://docs.google.com/document/d/1C1BZmi_Qv6oRrL4T5oN9N2bBMFOHPzSI/edit?usp=sharing&ouid=113711744349547563645&rtpof=true&sd=true
+ *
+ * Ex1 Bulls & Cows - Automatic solution.
+ * **** Add a general readme text here ****
+ * Add your explanation here:
+ *
+ *
+ * **** General Solution (algorithm) ****
+ * Add your explanation here:
+ *
+ *
+ *
+ * **** Results ****
+ * Make sure to state the average required guesses
+ * for 2,3,4,5,6 digit code:
+ *
+ * Average guesses 2: 9.11
+ * Average guesses 3: 15.5
+ * Average guesses 4: 17.19
+ * Average guesses 5: 20.7
+ * Average guesses 6: 22.03
+ *
+ */
+public class Ex1 {
+    public static final String Title = "Ex1 demo: manual Bulls & Cows game";
+    public static int numOfDigits = 3;                // Number of digits [2,6]
+    public static double counter=0;
+    public static void main(String[] args) {
+        BP_Server game = new BP_Server();   // Starting the "game-server"
+        long myID = 324161421L;             // Your ID should be written here
+        game.startGame(myID, numOfDigits);  // Starting a game
+        System.out.println(Title+" with code of "+numOfDigits+" digits");
+        //manualEx1Game(game);
+        autoEx1Game(game); // you should implement this function )and any additional required functions).
+    }
+    public static void manualEx1Game(BP_Server game) {
+        Scanner sc = new Scanner(System.in);
+        int ind=1;      // Index of the guess
+        int numOfDigits = game.getNumOfDigits();
+        double max = Math.pow(10,numOfDigits);
+        while(game.isRunning()) {           // While the game is running (the code has not been found yet
+            System.out.println(ind+") enter a guess: ");
+            int g = sc.nextInt();
+            if(g>=0 && g<max) {
+                int[] guess = toArray(g, numOfDigits); // int to digit array
+                int[] res = game.play(guess); // Playing a round and getting the B,C
+                if (game.isRunning()) {     // While the game is running
+                    System.out.println(ind + ") B: " + res[0] + ",  C: " + res[1]); // Prints the Bulls [0], and the Cows [1]
+                    ind += 1;               // Increasing the index
+                }
+            }
+            else {
+                System.out.println("ERR: wrong input, try again");
+            }
+        }
+        System.out.println(game.getStatus());
+    }
+
+
+    /**
+     * Simple parsing function that gets an int and returns an array of digits
+     * @param a - a natural number (as a guess)
+     * @param size  - number of digits (to handle the 00 case).
+     * @return an array of digits
+     */
+    private static int[] toArray(int a, int size){
+        int[] c = new int[size];
+        for(int j=0;j<c.length;j+=1) {
+            c[j] = a%10;
+            a=a/10;
+        }
+        return c;
+    }
+////////////////////////////////////////////////////
+    /**
+     * This function solves the Bulls & Cows game automatically.
+     * You should implement
+     * **** Add a specific explanation for each function ****
+     *
+     */
+    public static void autoEx1Game(BP_Server game) {
+        int numDigits = game.getNumOfDigits();      //the number of digit in code
+        double max = Math.pow(10, numDigits);        //the max number that we can enter         //the guess
+        //int[] guess = firstGuess(numDigits);
+        int[] guess=toArray(0,numDigits);
+        int[] numArr=makeArr(max);
+        boolean[] boolArr=makeBoolArr(max);
+        while (game.isRunning()) {
+            counter++;
+            int[] res = game.play(guess);
+            printGuess(guess, numDigits);
+            System.out.println("B: " + res[0] + " C: " + res[1]);
+            checkBoolArr(res, numArr, guess, boolArr, numDigits);
+            if(res[0]==numDigits)
+                break;
+            guess=toArray(nextGuess(numArr,boolArr),numDigits);
+        }
+    }
+    public static int[] makeArr(double max){
+        int[] numArr=new int[(int)max];
+        for(int i=0;i<max;i++) {
+            numArr[i]=i;
+        }
+        return numArr;
+    }
+    public static boolean[] makeBoolArr(double max){
+        boolean[] numCheck=new boolean[(int)max];
+        for(int i=0;i<max;i++) {
+            numCheck[i] =true;
+        }
+        return numCheck;
+    }
+    public static boolean[] checkBoolArr(int res[],int[] numArr,int[] guess,boolean[] boolArr,int numDigits) {
+        for(int i=0;i<boolArr.length;i++) {
+            if(boolArr[i]) {
+                int CowsComp = CheckCows(toArray(numArr[i], numDigits), guess);
+                int BullComp = checkBulls(toArray(numArr[i], numDigits),guess,numDigits);
+                if(CowsComp!=res[1]&&BullComp!=res[0]||BullComp==numDigits)
+                    boolArr[i]=false;
+                }
+            }
+        return boolArr;
+    }
+    public static int checkBulls(int[]numberInArr, int[]guess, int numDigits){
+        int countBulls=0;
+        for(int i=0;i<numberInArr.length;i++){
+            if(guess[i]==numberInArr[i])
+                countBulls++;
+        }
+        return countBulls;
+    }
+    public static int CheckCows(int[]numberInArr, int[] guess)
+    {
+        int countCows=0;
+        for(int i=0;i<numberInArr.length;i++){
+            for(int j=0;j<guess.length;j++){
+                if(numberInArr[i]==guess[j]&&i!=j){
+                    countCows++;
+                    break;
+                }
+            }
+        }
+        return countCows;
+    }
+    public static int nextGuess(int[] numArr,boolean[] boolArr){
+        int i=0;
+        for(i=0;i<boolArr.length;i++){
+            if(boolArr[i]){
+                return numArr[i];
+            }
+        }
+        return 0;
+    }
+    public static void printGuess(int[] guess,int numDigits){
+        for(int i=0;i<numDigits;i++){
+            if(i==numDigits-1)
+                System.out.print(guess[i]);
+            else
+                System.out.print(guess[i]+", ");
+        }
+        System.out.println();
+    }
+}
