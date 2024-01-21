@@ -17,19 +17,20 @@ import java.util.Scanner;
  * Make sure to state the average required guesses
  * for 2,3,4,5,6 digit code:
  *
- * Average required guesses 2: ___
- * Average required guesses 3: ___
- * Average required guesses 4: ___
- * Average required guesses 5: ___
- * Average required guesses 6: ___
+ * Average guesses 2: 6.97
+ * Average guesses 3: 8.62
+ * Average guesses 4: 10.72
+ * Average guesses 5: 16.29
+ * Average guesses 6: 35.36
  *
  */
 public class Ex1 {
     public static final String Title = "Ex1 demo: manual Bulls & Cows game";
+    public static int numOfDigits = 6;                // Number of digits [2,6]
+    public static double counter=0;
     public static void main(String[] args) {
         BP_Server game = new BP_Server();   // Starting the "game-server"
         long myID = 324161421L;             // Your ID should be written here
-        int numOfDigits = 6;                // Number of digits [2,6]
         game.startGame(myID, numOfDigits);  // Starting a game
         System.out.println(Title+" with code of "+numOfDigits+" digits");
         //manualEx1Game(game);
@@ -88,6 +89,7 @@ public class Ex1 {
         int[] numArr=makeArr(max);
         boolean[] boolArr=makeBoolArr(max);
         while (game.isRunning()) {
+            counter++;
             int[] res = game.play(guess);
             printGuess(guess, numDigits);
             System.out.println("B: " + res[0] + " C: " + res[1]);
@@ -95,12 +97,12 @@ public class Ex1 {
             guess=toArray(nextGuess(numArr,boolArr),numDigits);
         }
     }
-    /*public static int[] firstGuess(int numDigits){
+    public static int[] firstGuess(int numDigits){
         int[] firstG=new int[numDigits];
         for(int i=0;i<numDigits;i++)
             firstG[i]=i;
         return firstG;
-    }*/
+    }
     public static int[] makeArr(double max){
         int[] numArr=new int[(int)max];
         for(int i=0;i<max;i++) {
@@ -119,41 +121,37 @@ public class Ex1 {
         for(int i=0;i<boolArr.length;i++) {
             if(boolArr[i]) {
                 int equalNumbers = CheckEqual(toArray(numArr[i], numDigits), guess);
-                if(checkVeryEqual(toArray(numArr[i], numDigits),guess,numDigits))
+                int checkVery = checkVeryEqual(toArray(numArr[i], numDigits),guess,numDigits);
+                if(checkVery==1)
                     boolArr[i]=false;
-                if(res[0]==0&&res[1]==numDigits){
-                    if(checkVeryEqual2(toArray(numArr[i], numDigits),guess,numDigits))
+                if(res[0]==0&&res[1]==numDigits||res[1]>0&&res[0]==0){
+                    if(checkVery==2)
                         boolArr[i]=false;
                 }
                 if (res[0] + res[1] == 0 && equalNumbers != 0)
                     boolArr[i] = false;
                 if (res[0] + res[1] > 0 && equalNumbers != res[0] + res[1])
                     boolArr[i] = false;
+                if (res[0] + res[1] > 0 && equalNumbers != res[0] + res[1]) { //not sure about that
+                    if(equalNumbers>res[1]&&checkVery>res[0])
+                        boolArr[i] = false;
+                }
             }
         }
         return boolArr;
     }
-    public static boolean checkVeryEqual(int[]numberInArr,int[]guess,int numDigits){
+    public static int checkVeryEqual(int[]numberInArr,int[]guess,int numDigits){
         int countEqual=0;
         for(int i=0;i<numberInArr.length;i++){
             if(guess[i]==numberInArr[i])
                 countEqual++;
         }
         if(countEqual==numDigits)
-            return true;
-        else
-            return false;
-    }
-    public static boolean checkVeryEqual2(int[]numberInArr,int[]guess,int numDigits){
-        int countEqual=0;
-        for(int i=0;i<numberInArr.length;i++){
-            if(guess[i]==numberInArr[i])
-                countEqual++;
-        }
+            return 1;
         if(countEqual>0)
-            return true;
+            return 2;
         else
-            return false;
+            return 0;
     }
     public static int CheckEqual(int[]numberInArr,int[] guess)
     {
@@ -175,7 +173,7 @@ public class Ex1 {
                 return numArr[i];
             }
         }
-        return numArr[i];
+        return 0;
     }
     public static void printGuess(int[] guess,int numDigits){
         for(int i=0;i<numDigits;i++){
