@@ -19,20 +19,20 @@ public class Ex1Test {
 
     @Test
     public void test4Digits() {
-        double avg = testAverageRounds(3);
-        System.out.println("Average for 3 digits: " + avg);
+        double avg = testAverageRounds(4);
+        System.out.println("Average for 4 digits: " + avg);
         assertTrue(avg > 0); // Example assertion
     }
     @Test
     public void test5Digits() {
-        double avg = testAverageRounds(3);
-        System.out.println("Average for 3 digits: " + avg);
+        double avg = testAverageRounds(5);
+        System.out.println("Average for 5 digits: " + avg);
         assertTrue(avg > 0); // Example assertion
     }
     @Test
     public void test6Digits() {
-        double avg = testAverageRounds(3);
-        System.out.println("Average for 3 digits: " + avg);
+        double avg = testAverageRounds(6);
+        System.out.println("Average for 6 digits: " + avg);
         assertTrue(avg > 0); // Example assertion
     }
     private double testAverageRounds(int numOfDigits) {
