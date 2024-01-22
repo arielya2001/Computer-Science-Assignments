@@ -1,0 +1,157 @@
+import java.util.Scanner;
+/**
+ * Introduction to Computer Science, Ariel University, Ex1 (manual Example + a Template for your solution)
+ * See: <a href="https://docs.google.com/document/d/1C1BZmi_Qv6oRrL4T5oN9N2bBMFOHPzSI/edit?usp=sharing&ouid=113711744349547563645&rtpof=true&sd=true">...</a>
+ *
+ * Ex1 Bulls & Cows - Automatic solution.
+ * **** Add a general readme text here ****
+ * Add your explanation here:
+ * <p>
+ *
+ * **** General Solution (algorithm) ****
+ * Add your explanation here:
+ * <p>
+ *
+ *
+ * **** Results ****
+ * for 2,3,4,5,6 digit code:
+ *
+ * Average guesses 2: 6.65
+ * Average guesses 3: 7.64
+ * Average guesses 4: 8.22
+ * Average guesses 5: 8.75
+ * Average guesses 6: 9.22
+ *
+ */
+public class Ex1 {
+    public static final String Title = "Ex1 demo: manual Bulls & Cows game";
+    public static int numOfDigits = 6;                // Number of digits [2,6]
+    public static double counter=0;
+    public static void main(String[] args) {
+        BP_Server game = new BP_Server();   // Starting the "game-server"
+        long myID = 324161421L;             // Your ID should be written here
+        game.startGame(myID, numOfDigits);  // Starting a game
+        System.out.println(Title+" with code of "+numOfDigits+" digits");
+        //manualEx1Game(game);
+        autoEx1Game(game); // you should implement this function )and any additional required functions).
+    }
+    public static void manualEx1Game(BP_Server game) {
+        Scanner sc = new Scanner(System.in);
+        int ind=1;      // Index of the guess
+        int numOfDigits = game.getNumOfDigits();
+        double max = Math.pow(10,numOfDigits);
+        while(game.isRunning()) {             // While the game is running (the code has not been found yet
+            System.out.println(ind+") enter a guess: ");
+            int g = sc.nextInt();
+            if(g>=0 && g<max) {
+                int[] guess = toArray(g, numOfDigits); // int to digit array
+                int[] res = game.play(guess); // Playing a round and getting the B,C
+                if (game.isRunning()) {       // While the game is running
+                    System.out.println(ind + ") B: " + res[0] + ",  C: " + res[1]); // Prints the Bulls [0], and the Cows [1]
+                    ind += 1;                 // Increasing the index
+                }
+            }
+            else {
+                System.out.println("ERR: wrong input, try again");
+            }
+        }
+        System.out.println(game.getStatus());
+    }
+
+
+    /**
+     * Simple parsing function that gets an int and returns an array of digits
+     * @param a - a natural number (as a guess)
+     * @param size  - number of digits (to handle the 00 case).
+     * @return an array of digits
+     */
+    private static int[] toArray(int a, int size){
+        int[] c = new int[size];
+        for(int j=0;j<c.length;j+=1) {
+            c[j] = a%10;
+            a=a/10;
+        }
+        return c;
+    }
+////////////////////////////////////////////////////
+    /** autoEx1Game:
+     * This function solves the Bulls & Cows game automatically.
+     * "autoEx1Game" systematically generates guesses to the game server,
+     * factoring in the Bulls and Cows feedback provided by the game.
+     * after each guess the function adjusts the set of possible solutions,
+     * then proceeds to send the next guess.
+     * the function stops when the number of Bulls equals to the number of digits in the code, provided by the game.
+     */
+    public static void autoEx1Game(BP_Server game) {
+        int numDigits = game.getNumOfDigits();      //the number of digits in code
+        double max = Math.pow(10, numDigits);       //the number of possible answers
+        boolean[] guessArr=MakeGuessArr(max);            //array of the possible guesses
+        while (game.isRunning()) {
+            counter++;
+            int[] guess=toArray(NextGuess(guessArr),numDigits); //Convert the guess from a number to an array representation
+            int[] res = game.play(guess);                       //Get Bulls and Cows result and store in an array
+            CheckGuessArr(res, guess, guessArr, numDigits);     //Update the possible Guesses array
+            if(res[0]==numDigits)                               //no need to proceed (we found the code)
+                break;
+        }
+    }
+    /** MakeGuessArr:
+     * return a boolean array representing all possible guesses.
+     * Each index in the array corresponds to a number, and all values are set to true,
+     * indicating that all numbers are considered as possible guesses at the beginning.
+     */
+    public static boolean[] MakeGuessArr(double max){
+        boolean[] guessArr=new boolean[(int)max];
+        for(int i=0;i<max;i++) {                    //fill the array with True values
+            guessArr[i] =true;
+        }
+        return guessArr;
+    }
+    /** NextGuess:
+     * Returns the next possible guess in the boolean guess array.
+     * If the function finds an index with a 'true' value, it returns that index.
+     * [When the value of the index is "True" it's a possible guess]
+     */
+    public static int NextGuess(boolean[] boolArr){
+        for(int i=0;i<boolArr.length;i++){
+            if(boolArr[i]){                //Check if the value of the index is "True"
+                return i;
+            }
+        }
+        return 0;                         //return 0 when there are no possible numbers (not supposed to happen)
+    }
+    /** CheckGuessArr:
+     * Checks and updates the boolean guess array based on the Bulls and Cows result.
+     * Compares each possible guess with the actual result to evaluate if it's a possible number.
+     * If the Bulls and Cows counts do not match, or the guess is fully correct(we already guessed that number),
+     * mark the index in the boolean array as 'false'(not a possible number).
+     */
+    public static void CheckGuessArr(int[] res, int[] guess, boolean[] boolArr, int numDigits) {
+        for (int i = 0; i < boolArr.length; i++) {   //loop over all the numbers in the guess array
+            if (boolArr[i]) {                        //check only if the index value is True
+                int[] result=checkBullsAndCows(toArray(i,numDigits),guess);   
+                if ((result[1] != res[1] && result[0] != res[0])||(result[1] != res[1] || result[0] != res[0]))
+                    boolArr[i] = false;
+                if (result[0] == numDigits)
+                    boolArr[i] = false;
+            }
+        }
+    }
+    public static int[] checkBullsAndCows(int[]numArr, int[]guess){
+        int[] bAndC=new int[2];
+        bAndC[0]=0;
+        bAndC[1]=0;
+        for(int i=0;i<numArr.length;i++){
+            if(guess[i]==numArr[i])
+                bAndC[0]++;
+            else
+                for(int j=0;j<guess.length;j++){
+                    if(numArr[i] == guess[j] && i != j && numArr[i] != guess[i]) {
+                        bAndC[1]++;
+                        break;
+                    }
+                }
+
+        }
+        return bAndC;
+    }
