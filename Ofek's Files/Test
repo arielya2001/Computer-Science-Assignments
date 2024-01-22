@@ -1,0 +1,35 @@
+public class Ex1Test {
+    public static void main(String[] args){
+        double avg2=0,avg3=0,avg4=0,avg5=0,avg6=0;
+            for (int i = 0; i < 100; i++) {
+                Ex1.numOfDigits = 2;
+                Ex1.main(args);
+            }
+            avg2 = Ex1.counter / 100;
+            System.out.println(avg2);
+        for (int i = 0; i < 100; i++) {
+            Ex1.numOfDigits=3;
+            Ex1.main(args);
+        }
+        avg3= Ex1.counter/100;
+        System.out.println(avg3);
+        for (int i = 0; i < 100; i++) {
+            Ex1.numOfDigits=4;
+            Ex1.main(args);
+        }
+        avg4= Ex1.counter/100;
+        System.out.println(avg4);
+        for (int i = 0; i < 100; i++) {
+            Ex1.numOfDigits=5;
+            Ex1.main(args);
+        }
+        avg5= Ex1.counter/100;
+        System.out.println(avg5);
+        for (int i = 0; i < 100; i++) {
+            Ex1.numOfDigits=6;
+            Ex1.main(args);
+        }
+        avg6= Ex1.counter/100;
+        System.out.println(avg6);
+    }
+}
