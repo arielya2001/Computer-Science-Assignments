@@ -1,0 +1,16 @@
+private static int countCows(int[] copyGuess, int[] guess) {
+        int cows = 0;
+        boolean[] counted = new boolean[copyGuess.length]; // to avoid counting the same digit in copyGuess more than once
+
+        for (int i = 0; i < guess.length; i++) {
+            for (int j = 0; j < copyGuess.length; j++) {
+                if (guess[i] == copyGuess[j] && i != j && !counted[j]) {
+                    cows++;
+                    counted[j] = true; // mark as counted
+                    break;
+                }
+            }
+        }
+
+        return cows;
+    }
