@@ -38,7 +38,7 @@ import java.util.Arrays;
  * **** Results ****
  * Make sure to state the average required guesses
  * for 2,3,4,5,6 digit code:
- * Average required guesses 2: 7.24
+ * Average required guesses 2: 6.94
  * Average required guesses 3: 7.94
  * Average required guesses 4: 8.79
  * Average required guesses 5: 9.02
@@ -98,10 +98,11 @@ public class Ex1 {
     }
 
     /** -autoEx1Game-
-     * This function solves the Bulls & Cows game automatically.
-     * the function generates guesses and uses the result from each guess (Bulls and Cows)
-     * to update the array of possible answers. The function continues to make guesses
-     * until the correct code  is found (Bulls is equal to the numbers of digits of the code).
+     * Solves the Bull & Cows game automatically.
+     * The function generates guesses and uses the result from each guess (Bulls and Cows)
+     * To update the array of possible answers. The function continues to make guesses
+     * Until the correct code  is found (Bulls is equal to the numbers of digits of the code).
+     * @param game - an object from BP_Server class, start the game
      */
     public static void autoEx1Game(BP_Server game) {
         int numOfDigits = game.getNumOfDigits();
@@ -130,9 +131,9 @@ public class Ex1 {
     }
 
     /** -NextGuess-
-     * Return a possible number to guess in the game, the function loop over the boolean
-     * array with all the possible numbers from 0 to (10 ** number) of digits and return a number that
-     * still "true" - a possible choice
+     * Loop over an array and search for the first index value True 
+     * @param possibleNumbers - array with all the possible numbers from 0 to (10 ** number) of digits
+     * @return the first index when the value in that index is True
      */
     public static int NextGuess(boolean[] possibleNumbers) {
         for (int i = 0; i < possibleNumbers.length; i++) {
@@ -140,15 +141,18 @@ public class Ex1 {
                 return i;
             }
         }
-        return -1; // No remaining possible numbers (should not happen)
+        return -1; // No remaining possible numbers
     }
 
     /** -updateGuess-
-     * This function updates the boolean array of possible numbers based on the latest guess and its result.
-     * It loops over all possible numbers in the 'possibleNumbers' array,
-     * and checks if each number would give the same Bulls and Cows result as the latest guess.
-     * If a number doesn't match the result, it's marked as impossible (set to false).
-    *  */
+     * Updates the boolean array based on the latest guess and its result
+     * Checks if each number would give the same Bulls and Cows result as the latest guess
+     * If a number doesn't match the result, it's marked as impossible (set to false)
+     * @param possibleNumbers - array with all the possible numbers from 0 to (10 ** number) of digits
+     * @param guess - array that contain digits between 0 - 9
+     * @param result - array with size of 2 that contains 2 digits between 0 - 6
+     * @return new array after updating his values from True to False
+     */
     public static boolean[] updateGuess(boolean[] possibleNumbers, int[] guess, int[] result) {
         // loop over all the remaining possible numbers and check if they have less than the result
         for (int i = 0; i < possibleNumbers.length; i++) {
