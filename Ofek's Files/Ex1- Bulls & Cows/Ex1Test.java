@@ -32,12 +32,12 @@ public class Ex1Test {
         assertTrue(avg6>0);
     }
     public double avgCheck(int numDigits){
-        Ex1.numOfDigits=numDigits;
-        for(int i=0;i<100;i++){
+        Ex1.numOfDigits=numDigits;             // global int that represent the number of digits in the code
+        for(int i=0;i<100;i++){                //loop over the main in Ex1 100 times to get an average rounds number.
             Ex1.main(null);
         }
-        double avg=(double) Ex1.counter/100;
-        Ex1.counter=0;
+        double avg=(double) Ex1.counter/100;   //Divide the counter to get the average of 100 runs
+        Ex1.counter=0;                         //Reset the counter so we could use it again later
         return avg;
     }
 }
