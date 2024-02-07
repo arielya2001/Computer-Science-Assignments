@@ -1,0 +1,23 @@
+public boolean contains(Point_2D ot) {
+		if (this.p1.y() < this.p2.y()) {
+			if (this.p1.y() <= ot.y() && ot.y() <= this.p2.y()) {
+				if (this.p1.x() < this.p2.x()) {
+					if (this.p1.x() <= ot.x() && ot.x() <= this.p2.x())
+						return true;
+				} else if (this.p2.x() <= ot.x() && ot.x() <= this.p1.x())
+					return true;
+			}
+		}
+		else {
+			if (this.p2.y() <= ot.y() && ot.y() <= this.p1.y()) {
+				if (this.p1.x() < this.p2.x()) {
+					if (this.p1.x() <= ot.x() && ot.x() <= this.p2.x())
+						return true;
+				} else {
+					if (this.p2.x() <= ot.x() && ot.x() <= this.p1.x())
+						return true;
+				}
+			}
+		}
+		return false;
+	}
