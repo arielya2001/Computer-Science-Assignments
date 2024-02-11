@@ -23,3 +23,21 @@ public void rotate(Point_2D center, double angleDegrees) {
 		rectangleCenter.rotate(center,angleDegrees);
 		_lower_Left_Edge.rotate(center,angleDegrees);
 		_upper_Right_Edge.rotate(center,angleDegrees);
+
+
+public void rotate(Point_2D newCenter, double angleDegrees) {
+    // Calculate the old center (midpoint between upperLeft and lowerRight)
+    Point_2D oldCenter = calculateRectangleCenter(upperLeft, lowerRight);
+
+    // Calculate the translation vector (difference between old and new centers)
+    double translateX = newCenter.x() - oldCenter.x();
+    double translateY = newCenter.y() - oldCenter.y();
+
+    // Update the rectangle corners by applying the translation
+    upperLeft.translate(translateX, translateY);
+    lowerRight.translate(translateX, translateY);
+
+    // Now rotate the rectangle around the new center using your existing Point_2D rotate method
+    upperLeft.rotate(newCenter, angleDegrees);
+    lowerRight.rotate(newCenter, angleDegrees);
+}
