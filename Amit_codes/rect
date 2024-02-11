@@ -10,3 +10,16 @@ public void rotate(Point_2D center, double angleDegrees) {
         points[i].rotate(center, angleDegrees);
     }
 }
+
+
+	private Point_2D calculateRectangleCenter(Point_2D upperLeft, Point_2D lowerRight) {
+		double centerX = (upperLeft.x() + lowerRight.x()) / 2.0;
+		double centerY = (upperLeft.y() + lowerRight.y()) / 2.0;
+		return new Point_2D(centerX, centerY);
+	}
+
+public void rotate(Point_2D center, double angleDegrees) {
+		Point_2D rectangleCenter = calculateRectangleCenter(_lower_Left_Edge, _upper_Right_Edge);
+		rectangleCenter.rotate(center,angleDegrees);
+		_lower_Left_Edge.rotate(center,angleDegrees);
+		_upper_Right_Edge.rotate(center,angleDegrees);
