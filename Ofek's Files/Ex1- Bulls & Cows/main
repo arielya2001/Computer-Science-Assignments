@@ -1,0 +1,12 @@
+Point_2D p1 = new Point_2D(3,4);
+		Point_2D p2 = new Point_2D(5,6);
+		double cenX=(p1.x()+ p2.x())/2;
+		double cenY=(p1.y()+p2.y())/2;
+		Point_2D p3 = new Point_2D(cenX,cenY);
+		Rect_2D r1=new Rect_2D(p1,p2);
+		System.out.println(r1);
+		r1.scale(p3,2);
+		System.out.println(r1);
+		r1.scale(p3,-1);
+		r1.scale(p3,-1);
+		System.out.println(r1);
