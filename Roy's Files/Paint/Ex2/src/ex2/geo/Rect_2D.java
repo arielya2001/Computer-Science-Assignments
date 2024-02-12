@@ -8,8 +8,10 @@ package ex2.geo;
 public class Rect_2D implements GeoShape {
 
 	private Point_2D p1, p2, p3, p4;
-	private final Point_2D originalTopLeft;
-	private final Point_2D originalBottomRight;
+	private final Point_2D originalP1;
+	private final Point_2D originalP2;
+	private final Point_2D originalP3;
+	private final Point_2D originalP4;
 	private int negativeOneScaleCount = 0;
 
 	public Point_2D getP1() {return p1;}
@@ -23,10 +25,12 @@ public class Rect_2D implements GeoShape {
 	public Rect_2D(Point_2D topLeft, Point_2D bottomRight) {
 		this.p1 = new Point_2D(topLeft);
 		this.p2 = new Point_2D(bottomRight);
-		this.originalTopLeft = new Point_2D(topLeft);
-		this.originalBottomRight = new Point_2D(bottomRight);
+		this.originalP1 = new Point_2D(topLeft);
+		this.originalP2 = new Point_2D(bottomRight);
 		this.p3 = new Point_2D(bottomRight.x(), topLeft.y());
 		this.p4 = new Point_2D(topLeft.x(), bottomRight.y());
+		this.originalP3 = new Point_2D(p3);
+		this.originalP4 = new Point_2D(p4);
 	}
 
 	/** -Rect_2D-
@@ -122,8 +126,10 @@ public class Rect_2D implements GeoShape {
 			negativeOneScaleCount++;
 			if (negativeOneScaleCount == 2) {
 				// Restore to original scale and reset counter
-				this.p1 = originalTopLeft;
-				this.p2 = originalBottomRight;
+				this.p1 = originalP1;
+				this.p2 = originalP2;
+				this.p3 = originalP3;
+				this.p4 = originalP4;
 				negativeOneScaleCount = 0;
 				return;
 			}
@@ -134,6 +140,8 @@ public class Rect_2D implements GeoShape {
 		// scaling
 		p1.scale(center, ratio);
 		p2.scale(center, ratio);
+		p3.scale(center, ratio);
+		p4.scale(center, ratio);
 	}
 
 	/** -rotate-
