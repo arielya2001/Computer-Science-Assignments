@@ -111,26 +111,22 @@ public class Ex2 implements Ex2_GUI {
             Point_2D m1 = s.get_p2();
             StdDraw_Ex2.line(m0.x(), m0.y(), m1.x(), m1.y());
         }
+        Point_2D[] ps = null;
         // Handle Polygon
         if (gs instanceof Polygon_2D) {
-            Point_2D[] ps = ((Polygon_2D) gs).getAllPoints();
-            System.out.println(gs.area());
-            double[] arrayX = new double[ps.length];
-            double[] arrayY = new double[ps.length];
-            for (int i = 0; i < ps.length; i++) {
-                arrayX[i] = ps[i].x();
-                arrayY[i] = ps[i].y();
-            }
-            if (isFill) {
-                StdDraw_Ex2.filledPolygon(arrayX, arrayY);
-            } else {
-                StdDraw_Ex2.polygon(arrayX, arrayY);
-            }
+            ps = ((Polygon_2D) gs).getAllPoints();
+
         }
         // Handle Triangle
         if ( gs instanceof Triangle_2D) {
-            Point_2D[] ps = ((Triangle_2D) gs).getAllPoints();
-            System.out.println(gs.area());
+            ps = ((Triangle_2D) gs).getAllPoints();
+        }
+        // Handle Rectangle
+        if (gs instanceof Rect_2D) {
+            Rect_2D r = (Rect_2D) gs;
+            ps = new Point_2D[]{r.getP1(), r.getP3(), r.getP2(), r.getP4()};
+        }
+        if (ps != null) {
             double[] arrayX = new double[ps.length];
             double[] arrayY = new double[ps.length];
             for (int i = 0; i < ps.length; i++) {
@@ -143,25 +139,8 @@ public class Ex2 implements Ex2_GUI {
                 StdDraw_Ex2.polygon(arrayX, arrayY);
             }
         }
-        // Handle Rectangle
-        if (gs instanceof Rect_2D) {
-            Rect_2D rect = (Rect_2D) gs;
-            Point_2D topLeft = rect.getTopLeft();
-            Point_2D bottomRight = rect.getBottomRight();
-
-            double width = Math.abs(bottomRight.x() - topLeft.x());
-            double height = Math.abs(topLeft.y() - bottomRight.y());
-
-            double centerX = topLeft.x() + width / 2;
-            double centerY = bottomRight.y() + height / 2;
-
-            if (isFill) {
-                StdDraw_Ex2.filledRectangle(centerX, centerY, width / 2, height / 2);
-            } else {
-                StdDraw_Ex2.rectangle(centerX, centerY, width / 2, height / 2);
-            }
-        }
     }
+
 
     private void setColor(Color c) {
         for (int i = 0; i < _shapes.size(); i++) {
