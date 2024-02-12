@@ -17,9 +17,9 @@ public class Triangle_2D implements GeoShape{
 		this.p1 = new Point_2D(p1);
 		this.p3 = new Point_2D(p3);
 		this.p2 = new Point_2D(p2);
-		this.originalP1 = new Point_2D(p1.x(), p1.y());
-		this.originalP2 = new Point_2D(p2.x(), p2.y());
-		this.originalP3 = new Point_2D(p3.x(), p3.y());
+		this.originalP1 = new Point_2D(p1);
+		this.originalP2 = new Point_2D(p2);
+		this.originalP3 = new Point_2D(p3));
 
 		calculateHeight();
 	}
