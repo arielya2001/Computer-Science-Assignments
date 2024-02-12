@@ -107,36 +107,10 @@ public class ShapeCollection implements GUI_Shape_Collection {
 	@Override
 	public void save(String file_name) {
 		String content = this._shapes.toString().replace("[", "").replace("]", "");
-
-		// Convert color strings to hex format
-		Pattern colorPattern = Pattern.compile("java.awt.Colorr=(\\d+),g=(\\d+),b=(\\d+)");
-		Matcher colorMatcher = colorPattern.matcher(content);
-		StringBuffer colorConvertedContent = new StringBuffer();
-
-		while (colorMatcher.find()) {
-			// Convert the matched color to a hexadecimal string
-			int r = Integer.parseInt(colorMatcher.group(1));
-			int g = Integer.parseInt(colorMatcher.group(2));
-			int b = Integer.parseInt(colorMatcher.group(3));
-			Color color = new Color(r, g, b);
-			String hex = "#" + Integer.toHexString(color.getRGB() & 0xFFFFFF).toUpperCase();
-			// Replace the found color string with its hexadecimal representation
-			colorMatcher.appendReplacement(colorConvertedContent, Matcher.quoteReplacement(hex));
-		}
-		colorMatcher.appendTail(colorConvertedContent);
-
-		// Split the content by "GUIShape" to ensure each shape is on a new line
-		String[] shapes = colorConvertedContent.toString().split("(?=(GUIShape))");
-		StringBuilder finalContent = new StringBuilder();
-		for (String shape : shapes) {
-			if (!shape.isEmpty()) { // Avoid adding an empty line before the first shape
-				finalContent.append(shape.trim()).append("\n");
-			}
-		}
-
+		String modifiedContent = content.replaceAll("(?<!^)(GUIShape)", "\n$1");
 		String path = file_name + ".txt";
 		try {
-			Files.write(Paths.get(path), finalContent.toString().trim().getBytes(StandardCharsets.UTF_8));
+			Files.writeString(Paths.get(path), modifiedContent.trim());
 			System.out.println("File saved successfully.");
 		} catch (Exception e) {
 			System.err.println("Error writing to file: " + e.getMessage());
