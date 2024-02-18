@@ -1,0 +1,181 @@
+package ex2.gui;
+/**
+ * This class implements the GUI_shape.
+ * Ex2: you should implement this class!
+ * @author I2CS
+ */
+import ex2.geo.*;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+
+public class GUIShape implements GUI_Shape{
+	private GeoShape _g = null;
+	private boolean _fill;
+	private Color _color;
+	private int _tag;
+	private boolean _isSelected;
+	private ArrayList<Shape> shapes;
+
+	public GUIShape(GeoShape g, boolean f, Color c, int t) {
+		_g = null;
+		if (g!=null) {_g = g.copy();}
+		_fill= f;
+		_color = c;
+		_tag = t;
+		_isSelected = false;
+	}
+	public GUIShape(GUIShape ot) {
+		this(ot._g, ot._fill, ot._color, ot._tag);
+	}
+	public GUIShape(String s) {
+		String[] array_split=s.split(",");
+		if ("Rect_2D".equals(array_split[4]));
+		{
+			double upRightX = Double.parseDouble(array_split[5]);
+			double upRightY = Double.parseDouble(array_split[6]);
+			double lowLeftX = Double.parseDouble(array_split[9]);
+			double lowLeftY = Double.parseDouble(array_split[10]);
+			Point_2D ur=new Point_2D(upRightX,upRightY);
+			Point_2D ll=new Point_2D(lowLeftX,lowLeftY);
+			Rect_2D r=new Rect_2D(ur,ll);
+			int tag=Integer.parseInt(array_split[3]);
+			boolean filled=Boolean.parseBoolean(array_split[2]);
+			Color color=Color.decode(array_split[1]);
+			_g = r; _color = color;_tag=tag; _fill=filled; _isSelected=false;
+		}
+		if ("Triangle_2D".equals(array_split[4]));
+		{
+			double topX = Double.parseDouble(array_split[5]);
+			double topY = Double.parseDouble(array_split[6]);
+			double rightX = Double.parseDouble(array_split[9]);
+			double rightY = Double.parseDouble(array_split[10]);
+			double leftX = Double.parseDouble(array_split[11]);
+			double leftY = Double.parseDouble(array_split[11]);
+			Point_2D top=new Point_2D(topX,topY);
+			Point_2D right=new Point_2D(rightX,rightY);
+			Point_2D left=new Point_2D(leftX,leftY);
+			Triangle_2D t=new Triangle_2D(top,right,left);
+			int tag=Integer.parseInt(array_split[3]);
+			boolean filled=Boolean.parseBoolean(array_split[2]);
+			Color color=Color.decode(array_split[1]);
+			_g = t; _color = color;_tag=tag; _fill=filled; _isSelected=false;
+		}
+		if ("Polygon_2D".equals(array_split[4]));
+		{
+			Polygon_2D p=new Polygon_2D();
+			for (int i=5; i< array_split.length - 1; i+= 2) {
+				double x =Double.parseDouble(array_split[i]);
+				double y =Double.parseDouble(array_split[i+1]);
+				p.add(new Point_2D(x, y));
+			}
+			int tag=Integer.parseInt(array_split[3]);
+			boolean filled=Boolean.parseBoolean(array_split[2]);
+			Color color=Color.decode(array_split[1]);
+			_g = p; _color = color;_tag=tag; _fill=filled; _isSelected=false;
+		}
+		if ("Circle_2D".equals(array_split[4]));
+		{
+			double x = Double.parseDouble(array_split[5]);
+			double y = Double.parseDouble(array_split[6]);
+			Point_2D center = new Point_2D(x, y);
+			double radius = Double.parseDouble(array_split[7]);
+			Circle_2D c = new Circle_2D(center, radius);
+			int tag = Integer.parseInt(array_split[3]);
+			boolean filled = Boolean.parseBoolean(array_split[2]);
+			Color color = Color.decode(array_split[1]);
+			_g = c;
+			_color = color;
+			_tag = tag;
+			_fill = filled;
+			_isSelected = false;
+		}
+
+		if ("Segment_2D".equals(array_split[4]));
+		{
+			double p1x = Double.parseDouble(array_split[5]);
+			double p1y = Double.parseDouble(array_split[6]);
+			double p2x = Double.parseDouble(array_split[7]);
+			double p2y = Double.parseDouble(array_split[8]);
+			Point_2D p1 = new Point_2D(p1x, p1y);
+			Point_2D p2 = new Point_2D(p2x, p2y);
+			Segment_2D seg = new Segment_2D(p1, p2);
+			int tag = Integer.parseInt(array_split[3]);
+			boolean filled = Boolean.parseBoolean(array_split[2]);
+			Color color = Color.decode(array_split[1]);
+			_g = seg;
+			_color = color;
+			_tag = tag;
+			_fill = filled;
+			_isSelected = false;
+		}
+
+
+
+
+
+
+
+	}
+
+	@Override
+	public GeoShape getShape() {
+		return _g;
+	}
+
+	@Override
+	public void setShape(GeoShape g) {
+		_g = g;
+	}
+
+	@Override
+	public boolean isFilled() {
+		return _fill;
+	}
+
+	@Override
+	public void setFilled(boolean filled) {
+		_fill = filled;
+	}
+
+	@Override
+	public Color getColor() {
+		return _color;
+	}
+
+	@Override
+	public void setColor(Color cl) {
+		_color = cl;
+	}
+
+	@Override
+	public int getTag() {
+		return _tag;
+	}
+
+	@Override
+	public void setTag(int tag) {
+		_tag = tag;
+		
+	}
+
+	@Override
+	public GUI_Shape copy() {
+		GUI_Shape cp = new GUIShape(this);
+		return cp;
+	}
+	@Override
+	public String toString() {
+		String ans = ""+this.getClass().getSimpleName()+","+_color+","+_fill+","+_tag+","+this._g.getClass().getSimpleName()+","+_g.toString();
+		return ans;
+	}
+	@Override
+	public boolean isSelected() {
+		return this._isSelected;
+	}
+	@Override
+	public void setSelected(boolean s) {
+		this._isSelected = s;
+	}
+}
