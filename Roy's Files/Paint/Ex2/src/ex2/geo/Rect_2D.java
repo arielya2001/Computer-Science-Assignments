@@ -1,5 +1,8 @@
 package ex2.geo;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * This class represents a 2D axis parallel rectangle.
  * @author Roy Naor
@@ -8,11 +11,6 @@ package ex2.geo;
 public class Rect_2D implements GeoShape {
 
 	private Point_2D p1, p2, p3, p4;
-	private final Point_2D originalP1;
-	private final Point_2D originalP2;
-	private final Point_2D originalP3;
-	private final Point_2D originalP4;
-	private int negativeOneScaleCount = 0;
 
 	public Point_2D getP1() {return p1;}
 
@@ -22,15 +20,18 @@ public class Rect_2D implements GeoShape {
 
 	public Point_2D getP4() {return p4;}
 
-	public Rect_2D(Point_2D topLeft, Point_2D bottomRight) {
-		this.p1 = new Point_2D(topLeft);
-		this.p2 = new Point_2D(bottomRight);
-		this.originalP1 = new Point_2D(topLeft);
-		this.originalP2 = new Point_2D(bottomRight);
-		this.p3 = new Point_2D(bottomRight.x(), topLeft.y());
-		this.p4 = new Point_2D(topLeft.x(), bottomRight.y());
-		this.originalP3 = new Point_2D(p3);
-		this.originalP4 = new Point_2D(p4);
+	public Rect_2D(Point_2D p1, Point_2D p2) {
+		this.p1 = new Point_2D(p1);
+		this.p2 = new Point_2D(p2);
+		this.p3 = new Point_2D(p2.x(), p1.y());
+		this.p4 = new Point_2D(p1.x(), p2.y());
+	}
+public Rect_2D(Point_2D p1, Point_2D p2, Point_2D p3, Point_2D p4) {
+		this.p1 = new Point_2D(p1);
+		this.p2 = new Point_2D(p2);
+		this.p3 = new Point_2D(p3);
+		this.p4 = new Point_2D(p4);
+
 	}
 
 	public Rect_2D(Rect_2D t1) {this(t1.p1, t1.p2);}
@@ -102,27 +103,6 @@ public class Rect_2D implements GeoShape {
 
 	@Override
 	public void scale(Point_2D center, double ratio) {
-		if (ratio == 1) {return;} // exit the method
-
-		if (ratio == -1) {
-			negativeOneScaleCount++;
-			if (negativeOneScaleCount == 2) {
-				// Restore to original scale and reset counter
-				this.p1.set_x(originalP1.x());
-				this.p2.set_x(originalP2.x());
-				this.p3.set_x(originalP3.x());
-				this.p4.set_x(originalP4.x());
-				this.p1.set_y(originalP1.x());
-				this.p2.set_y(originalP2.y());
-				this.p3.set_y(originalP3.x());
-				this.p4.set_y(originalP4.x());
-				negativeOneScaleCount = 0;
-				return;
-			}
-		}
-		// Reset the counter if -1 is not twice in a row
-		else {negativeOneScaleCount = 0;}
-
 		// scaling
 		p1.scale(center, ratio);
 		p2.scale(center, ratio);
@@ -137,6 +117,22 @@ public class Rect_2D implements GeoShape {
 		p2.rotate(center, angleDegrees);
 		p3.rotate(center, angleDegrees);
 		p4.rotate(center, angleDegrees);
+	}
+
+	@Override
+	public boolean equals(Object ob) {
+		if (this == ob) return true;
+		if (ob == null || getClass() != ob.getClass()) return false;
+
+		Rect_2D other = (Rect_2D) ob;
+
+		Point_2D[] thisPoints = {this.p1, this.p2, this.p3, this.p4};
+		Point_2D[] otherPoints = {other.getP1(), other.getP2(), other.getP3(), other.getP4()};
+
+		List<Point_2D> thisPointsList = Arrays.asList(thisPoints);
+		List<Point_2D> otherPointsList = Arrays.asList(otherPoints);
+
+		return thisPointsList.containsAll(otherPointsList) && otherPointsList.containsAll(thisPointsList);
 	}
 
 	@Override
