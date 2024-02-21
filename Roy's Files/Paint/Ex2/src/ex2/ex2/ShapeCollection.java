@@ -87,15 +87,15 @@ public class ShapeCollection implements GUI_Shape_Collection {
 
 	@Override
 	public void save(String file_name) {
-		// Convert the shapes collection to a string and remove the square brackets.
-		String content = this._shapes.toString().replace("[", "").replace("]", "");
 		// Insert a newline before each "GUIShape" instance in the content, except at the start of the text.
-		String modifiedContent = content.replaceAll("(?<!^)(GUIShape)", "\n$1");
-		// Append ".txt" to the provided filename to create the full path.
 		String path = file_name + ".txt";
+		ArrayList<String> lines = new ArrayList<>();
+		for (GUI_Shape shape : this._shapes) {
+			String new_shape = shape.toString().replace("]", "").replace("[", "");
+			lines.add(new_shape);
+		}
 		try {
-			// Write the modified content to a file at the specified path.
-			Files.writeString(Paths.get(path), modifiedContent.trim());
+			Files.write(Paths.get(path), lines);
 			System.out.println("File saved successfully.");
 		} catch (Exception e) {
 			// Print an error message if writing to the file fails.
