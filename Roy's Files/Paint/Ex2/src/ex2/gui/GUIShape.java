@@ -29,16 +29,22 @@ public class GUIShape implements GUI_Shape{
 	public GUIShape(String s) {
 		String[] prop = s.split(",");
 		if ("Rect_2D".equals(prop[4])) {
-			double xTop = Double.parseDouble(prop[5]);
-			double yTop = Double.parseDouble(prop[6]);
-			double xRight = Double.parseDouble(prop[9]);
-			double yRight = Double.parseDouble(prop[10]);
+			double xP1 = Double.parseDouble(prop[5]);
+			double yP1 = Double.parseDouble(prop[6]);
+			double xP3 = Double.parseDouble(prop[7]);
+			double yP3 = Double.parseDouble(prop[8]);
+			double xP2 = Double.parseDouble(prop[9]);
+			double yP2 = Double.parseDouble(prop[10]);
+			double xP4 = Double.parseDouble(prop[11]);
+			double yP4 = Double.parseDouble(prop[12]);
 			boolean isFilled = Boolean.parseBoolean(prop[2]);
 			int tag = Integer.parseInt(prop[3]);
 			Color color = Color.decode(prop[1]);
-			Point_2D Top = new Point_2D(xTop, yTop);
-			Point_2D RightBottom = new Point_2D(xRight, yRight);
-			Rect_2D r = new Rect_2D(Top, RightBottom);
+			Point_2D p1 = new Point_2D(xP1, yP1);
+			Point_2D p2 = new Point_2D(xP2, yP2);
+			Point_2D p3 = new Point_2D(xP3, yP3);
+			Point_2D p4 = new Point_2D(xP4, yP4);
+			Rect_2D r = new Rect_2D(p1, p2, p3, p4);
 			_g = r; _fill = isFilled; _color = color; _tag = tag;_isSelected = false;
 		}
 		if ("Circle_2D".equals(prop[4])) {
