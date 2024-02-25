@@ -9,9 +9,9 @@ import ex2.gui.GUIShape;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.awt.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-import static org.junit.Assert.*;
+import java.awt.*;
 
 class Ex2Test {
     private Ex2 ex2;
@@ -33,10 +33,10 @@ class Ex2Test {
     @Test
     void init() {
         ex2.init(null);      // test with null
-        assertTrue(ex2.getShape_Collection() instanceof ShapeCollection);
+        assertTrue(ex2.getShape_Collection() instanceof ShapeCollection,"ex2 should have the instance of shape collection");
 
         ex2.init(collection);   // test with shape collection
-        assertEquals(collection.size(),ex2.getShape_Collection().size());
+        assertTrue(collection.equals(ex2.getShape_Collection()),"The collections should be equal");
     }
 
     @Test
@@ -44,13 +44,13 @@ class Ex2Test {
         collection.add(gs1);
         ex2.init(collection);
         GUI_Shape_Collection actual = ex2.getShape_Collection();
-        assertEquals(collection.size(),actual.size());
+        assertTrue(collection.equals(actual),"The collections should be equal");
     }
 
     @Test
     void getInfo() {
         String actual = ex2.getInfo();
         String excepted = "GUIShape,-16777216,true,1,Circle_2D,4.0,5.0, 4.0\n";
-        assertEquals(excepted,actual);
+        assertEquals(excepted,actual,"The Strings should be equal");
     }
 }
