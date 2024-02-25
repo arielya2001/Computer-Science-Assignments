@@ -20,13 +20,26 @@ public class Rect_2D implements GeoShape {
 
 	public Point_2D getP4() {return p4;}
 
+	/**
+	 * Constructor to initialize a rectangle with two diagonal points.
+	 * @param p1 the first diagonal point
+	 * @param p2 the second diagonal point
+	 */
 	public Rect_2D(Point_2D p1, Point_2D p2) {
 		this.p1 = new Point_2D(p1);
 		this.p2 = new Point_2D(p2);
 		this.p3 = new Point_2D(p2.x(), p1.y());
 		this.p4 = new Point_2D(p1.x(), p2.y());
 	}
-public Rect_2D(Point_2D p1, Point_2D p2, Point_2D p3, Point_2D p4) {
+
+	/**
+	 * Constructor to initialize a rectangle with four points.
+	 * @param p1 the first point of the rectangle
+	 * @param p2 the second point of the rectangle
+	 * @param p3 the third point of the rectangle
+	 * @param p4 the fourth point of the rectangle
+	 */
+	public Rect_2D(Point_2D p1, Point_2D p2, Point_2D p3, Point_2D p4) {
 		this.p1 = new Point_2D(p1);
 		this.p2 = new Point_2D(p2);
 		this.p3 = new Point_2D(p3);
@@ -34,8 +47,17 @@ public Rect_2D(Point_2D p1, Point_2D p2, Point_2D p3, Point_2D p4) {
 
 	}
 
+	/**
+	 * Copy constructor to create a new rectangle identical to the given one.
+	 * @param t1 the rectangle to copy
+	 */
 	public Rect_2D(Rect_2D t1) {this(t1.p1, t1.p2);}
 
+	/**
+	 * Check if a given point is contained within the rectangle.
+	 * @param ot the point to check
+	 * @return true if the point is inside the rectangle, false otherwise
+	 */
 	@Override
 	public boolean contains(Point_2D ot) {
 		// Check if p1's y-coordinate is less than p2's y-coordinate
@@ -69,7 +91,10 @@ public Rect_2D(Point_2D p1, Point_2D p2, Point_2D p3, Point_2D p4) {
 		return false; // If none of the conditions are met, 'ot' does not fall within the rectangle
 	}
 
-
+	/**
+	 * Calculates the area of the rectangle.
+	 * @return the area of the rectangle
+	 */
 	@Override
 	public double area() {
 		Point_2D bottomLeft = new Point_2D(p1.x(), p2.y()); // use the rectangle area formula
@@ -77,11 +102,19 @@ public Rect_2D(Point_2D p1, Point_2D p2, Point_2D p3, Point_2D p4) {
 		return this.p1.distance(bottomLeft) * this.p2.distance(bottomLeft);
 	}
 
+	/**
+	 * Calculates the perimeter of the rectangle.
+	 * @return the perimeter of the rectangle
+	 */
 	@Override
 	public double perimeter() {return (2 * this.p2.distance(p4)) +
 			(2 * this.p1.distance(p4));} // use the rectangle perimeter formula
 	// find the 2 of width and 2 of length and sum the m
 
+	/**
+	 * Translates all points of the rectangle by a given vector.
+	 * @param vec the vector by which to translate the points
+	 */
 	@Override
 	public void translate(Point_2D vec) {
 		// use the move method from Point_2d to move all the rectangle points
@@ -91,6 +124,10 @@ public Rect_2D(Point_2D p1, Point_2D p2, Point_2D p3, Point_2D p4) {
 		this.p4.move(vec);
 	}
 
+	/**
+	 * Creates a deep copy of this rectangle.
+	 * @return a new Rect_2D object with the same points as the current rectangle
+	 */
 	@Override
 	public GeoShape copy() {
 		// use the second contractor method to create new object
@@ -101,6 +138,11 @@ public Rect_2D(Point_2D p1, Point_2D p2, Point_2D p3, Point_2D p4) {
 		return copyRect;
 	}
 
+	/**
+	 * Scales the rectangle by a given ratio from a specified center point.
+	 * @param center the center point from which to scale
+	 * @param ratio the ratio by which to scale the rectangle
+	 */
 	@Override
 	public void scale(Point_2D center, double ratio) {
 		// scaling
@@ -110,6 +152,11 @@ public Rect_2D(Point_2D p1, Point_2D p2, Point_2D p3, Point_2D p4) {
 		p4.scale(center, ratio);
 	}
 
+	/**
+	 * Rotates all points of the rectangle around a given center by a specified angle.
+	 * @param center the center point around which to rotate
+	 * @param angleDegrees the angle by which to rotate the points, in degrees
+	 */
 	@Override
 	public void rotate(Point_2D center, double angleDegrees) {
 		if (angleDegrees == 0){return;}
@@ -119,6 +166,11 @@ public Rect_2D(Point_2D p1, Point_2D p2, Point_2D p3, Point_2D p4) {
 		p4.rotate(center, angleDegrees);
 	}
 
+	/**
+	 * Compares this rectangle to another object for equality.
+	 * @param ob the object to compare with this rectangle
+	 * @return true if the specified object is a rectangle with the same points, false otherwise
+	 */
 	@Override
 	public boolean equals(Object ob) {
 		if (this == ob) return true;
@@ -135,6 +187,10 @@ public Rect_2D(Point_2D p1, Point_2D p2, Point_2D p3, Point_2D p4) {
 		return thisPointsList.containsAll(otherPointsList) && otherPointsList.containsAll(thisPointsList);
 	}
 
+	/**
+	 * Converts the rectangle to a string representation.
+	 * @return a string representation of the rectangle
+	 */
 	@Override
 	public String toString() {return p1 + "," + p3 + "," + p2 + "," + p4;}
 	// use the rotate method from Point_2d to rotate all the points of the rectangle
