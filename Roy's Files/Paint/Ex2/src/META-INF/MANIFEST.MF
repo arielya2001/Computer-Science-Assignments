@@ -1,3 +1,0 @@
-Manifest-Version: 1.0
-Main-Class: ex2.ex2.Ex2_main
-
