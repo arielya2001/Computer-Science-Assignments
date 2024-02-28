@@ -157,11 +157,28 @@ public class Polygon_2D implements GeoShape{
 	 */
 	@Override
 	public boolean equals(Object ob) {
-		if (ob.getClass() != this.getClass())
-			return false;
-		Point_2D[] expected = this.getAllPoints();
-		Point_2D[] actual = ((Polygon_2D) ob).getAllPoints();
-		return Arrays.equals(expected, actual);
+		if (this == ob) return true; // the same polygon
+		if (!(ob instanceof Polygon_2D)) return false; // the shape is not polygon
+		Polygon_2D other = (Polygon_2D) ob; // create polygon because ob is not necessarily polygon
+		int size = this.vertex.size();
+		if (size != other.vertex.size()) return false; // the number of vertexes not equal
+
+		int index = other.vertex.indexOf(this.vertex.get(0));
+		if (index == -1) return false; // No matching start, not equal
+
+		// Check normal order
+		for (int i = 0; i < size; i++) {
+			if (!this.vertex.get(i).equals(other.vertex.get((index + i) % size))) {
+				// If normal order fails, check reverse order
+				for (int j = 0; j < size; j++) {
+					if (!this.vertex.get(j).equals(other.vertex.get((index - j + size) % size))) {
+						return false; // Both orders fail, not equal
+					}
+				}
+				return true; // Reverse order succeeds, they are equal
+			}
+		}
+		return true; // Normal order succeeds, they are equal
 	}
 
 	/**
