@@ -1,0 +1,159 @@
+package ex2.geo;
+
+/**
+ * This class represents a 2D axis parallel rectangle.
+ * Ex4: you should implement this class!
+ * @author I2CS
+ *
+The Rect_2D class represents a two-dimensional axis-parallel rectangle in a Cartesian plane. It implements the GeoShape interface, providing methods for geometric operations and properties typical of rectangles.
+
+*Constructors:
+Rect_2D(Point_2D p1, Point_2D p2): Constructs a rectangle with two specified points representing opposite corners.
+Rect_2D(Rect_2D t1): Constructs a rectangle by copying another rectangle.
+*Methods:
+contains(Point_2D ot): Checks if a point is contained within the rectangle.
+area(): Calculates the area of the rectangle.
+perimeter(): Calculates the perimeter of the rectangle.
+translate(Point_2D vec): Translates the rectangle by a given vector.
+copy(): Creates a copy of the rectangle.
+toString(): Generates a string representation of the rectangle.
+scale(Point_2D center, double ratio): Scales the rectangle around a specified center point by a given ratio.
+rotate(Point_2D center, double angleDegrees): Rotates the rectangle around a specified center point by a given angle.
+equals(Object p): Checks if the rectangle is equal to another object.
+
+*Properties
+p1, p2: Points representing opposite corners of the rectangle.
+p3, p4: Additional points representing opposite corners of the rectangle.
+ */
+
+public class Rect_2D implements GeoShape {
+	private Point_2D p1, p2;
+	private Point_2D p3, p4;
+
+	public Point_2D getP1() {return new Point_2D(p1);}
+	public Point_2D getP2() {return new Point_2D(p2);}
+	public Point_2D getP3() {return new Point_2D(p3);}
+	public Point_2D getP4(){return new Point_2D(p4);}
+
+	public Rect_2D(Point_2D p1, Point_2D p2) {
+		this.p1 = new Point_2D(p1);
+		this.p2 = new Point_2D(p2);
+		p3 =new Point_2D(p2.x(),p1.y());
+		p4 =new Point_2D(p1.x(),p2.y());
+
+	}
+
+
+	public Rect_2D(Point_2D p1, Point_2D p2,Point_2D p3, Point_2D p4)
+	{
+
+		this.p1 =p1;
+		this.p2 =p2;
+		this.p3 =p3;
+		this.p4 =p4;
+	}
+
+	public Rect_2D(Rect_2D t1) {
+		this(t1.p1, t1.p2);
+	}
+
+	@Override
+	public boolean contains(Point_2D ot) {
+		boolean check_x_val;
+		boolean check_y_val;
+
+		if (p2.x() < p1.x()) {
+			check_x_val = ot.x() >= p2.x() && ot.x() <= p1.x();
+		} else {
+			check_x_val = ot.x() >= p1.x() && ot.x() <= p2.x();
+		}
+
+		if (p2.y() < p1.y()) {
+			check_y_val = ot.y() >= p2.y() && ot.y() <= p1.y();
+		} else {
+			check_y_val = ot.y() >= p1.y() && ot.y() <= p2.y();
+		}
+
+		return check_x_val && check_y_val;
+	}
+
+
+	@Override
+	public double area() {
+		double r_area = Math.abs(p1.x() - p2.x()) * Math.abs(p1.y() - p2.y());
+		return r_area;
+	}
+
+	@Override
+	public double perimeter() {
+		double r_perimeter = Math.abs(p1.x() - p2.x()) * 2 + Math.abs(p1.y() - p2.y()) * 2;
+		return r_perimeter;
+	}
+
+	@Override
+	public void translate(Point_2D vec) {
+		p1.move(vec);
+		p2.move(vec);
+		p3.move(vec);
+		p4.move(vec);
+	}
+
+	@Override
+	public GeoShape copy() {
+		Rect_2D copyRect = new Rect_2D(new Point_2D(this.p1), new Point_2D(this.p2));
+		copyRect.p3 = new Point_2D(this.p3);
+		copyRect.p4 = new Point_2D(this.p4);
+		return copyRect;
+	}
+
+	@Override
+	public String toString() {return p1 + "," + p3 + "," + p2 + "," + p4;}
+
+	@Override
+	public void scale(Point_2D center, double ratio) {
+		p1.scale(center,ratio);
+		p2.scale(center,ratio);
+		p3.scale(center,ratio);
+		p4.scale(center,ratio);
+
+	}
+
+	@Override
+	public void rotate(Point_2D center, double angleDegrees) {
+		p1.rotate(center, angleDegrees);
+		p2.rotate(center, angleDegrees);
+		p3.rotate(center, angleDegrees);
+		p4.rotate(center, angleDegrees);
+
+	}
+
+	@Override
+	public boolean equals(Object p) {
+		if (this == p) return true;
+		if (p == null || !(p instanceof Rect_2D)) {
+			return false;
+		}
+		Rect_2D r = (Rect_2D) p;
+		Point_2D[] rec1Points = {p3, p1, p2, p4};
+		Point_2D[] rec2Points = {r.getP4(), r.getP1(), r.getP3(), r.getP2()};
+		int counter = 0;
+		for (int i = 0; i < rec1Points.length; i++) {
+			for (int j = 0; j < 4; j++) {
+				if (rec1Points[i].equals(rec2Points[j])) {
+					counter++;
+					break;
+				}
+			}
+		}
+		return (counter == 4);
+	}
+
+
+}
+
+
+
+
+
+
+
