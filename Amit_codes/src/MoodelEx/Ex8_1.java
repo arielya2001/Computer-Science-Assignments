@@ -8,15 +8,13 @@ public class Ex8_1 {
     public static void main(String[]args)
     {
         ArrayList<String>amitList=new ArrayList<>();
-        String s1="amen";
-        String s2="titpozez";
-        String s3="sharmut";
-        String s4="mabsut";
+        String s1="di";
+        String s2="cvar";
+        String s3="halas";
         amitList.add(s1);
         amitList.add(s2);
-//        amitList.add(s3);
-//        amitList.add(s4);
-        String line="titpozez amen";
+       amitList.add(s3);
+        String line="halas cvar di";
         System.out.println(isPer(amitList,line));
     }
 
