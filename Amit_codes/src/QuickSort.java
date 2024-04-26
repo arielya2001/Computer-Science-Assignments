@@ -2,13 +2,13 @@ public class QuickSort {
 
         public static void main(String[] args) {
             int[] arr = {10, 4, 3,2, 6};
-            int n = 3;  // לדוגמה, נניח שאנחנו רוצים למצוא את האיבר השלישי בסדר הגודל
+            int n = 3; 
             int result = quickselect(arr, 0, arr.length - 1, n - 1);
             System.out.println("האיבר ה-" + n + "י הוא: " + result);
         }
 
         public static int quickselect(int[] arr, int left, int right, int k) {
-            if (left == right) { // אם יש איבר אחד בלבד
+            if (left == right) { 
                 return arr[left];
             }
 
