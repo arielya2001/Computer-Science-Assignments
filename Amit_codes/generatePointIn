@@ -42,8 +42,8 @@
     public static Point_2D generatePointInCircle(Circle_2D c) {
         double angle = Math.random() * 2 * Math.PI;
         double radius = Math.sqrt(Math.random()) * c.getRadius();
-        double x = c.getCenter().x() + radius * Math.sin(angle);
-        double y = c.getCenter().y() + radius * Math.cos(angle);
+        double x = c.getCenter().x() + radius * Math.cos(angle);
+        double y = c.getCenter().y() + radius * Math.sin(angle);
         return new Point_2D(x, y);
     }
 
