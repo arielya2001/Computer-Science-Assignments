@@ -1,0 +1,83 @@
+ public static Point_2D[] pointsInTriangle(Triangle_2D t, int size) {
+        Point_2D[] points = new Point_2D[size];
+        int i = 0;
+        while (i < size) {
+            Point_2D p1 = generatePointInTriangle(t);
+            if (t.contains(p1)) {
+                points[i] = p1;
+                i++;
+            }
+        }
+        return points;
+    }
+
+    public static Point_2D generatePointInTriangle(Triangle_2D t) {
+        Point_2D[] point = t.getAllPoints();
+        double r = Math.random();
+        double s = Math.random();
+
+        if (r + s > 1) {
+            r = 1 - r;
+            s = 1 - s;
+        }
+        double x = point[0].x() * (1 - s - r) + point[1].x() * r + point[2].x() * s;
+        double y = point[0].y() * (1 - s - r) + point[1].y() * r + point[2].y() * s;
+        return new Point_2D(x, y);
+
+    }
+
+    public static Point_2D[] pointInCircle(Circle_2D c, int size) {
+        int i = 0;
+        Point_2D[] point = new Point_2D[size];
+        while (i < size) {
+            Point_2D p1 = generatePointInCircle(c);
+            if (c.contains(p1)) {
+                point[i] = p1;
+                i++;
+            }
+        }
+        return point;
+    }
+
+    public static Point_2D generatePointInCircle(Circle_2D c) {
+        double angle = Math.random() * 2 * Math.PI;
+        double radius = Math.sqrt(Math.random()) * c.getRadius();
+        double x = c.getCenter().x() + radius * Math.sin(angle);
+        double y = c.getCenter().y() + radius * Math.cos(angle);
+        return new Point_2D(x, y);
+    }
+
+    public static Point_2D[] pointInRectangle(Rect_2D rect, int size) {
+        Point_2D[] points = new Point_2D[size];
+        int i = 0;
+        while (i < size) {
+            Point_2D p = generatePointInRectangle(rect);
+            points[i] = p;
+            i++;
+        }
+        return points;
+    }
+
+    public static Point_2D generatePointInRectangle(Rect_2D rect) {
+        double maxX = Math.max(rect.getP1().x(), rect.getP2().x());
+        double minX= Math.min(rect.getP1().x(), rect.getP2().x());
+        double maxY = Math.max(rect.getP1().y(), rect.getP2().y());
+        double minY=Math.min(rect.getP1().y(), rect.getP2().y());
+        double high = maxX-minX;
+        double width = maxY-minY;
+        double x1=Math.random()*width+minX;
+        double y1=Math.random()*high+minY;
+        return  new Point_2D(x1,y1);
+
+    }
+
+    public static Point_2D generatePointInSegment(Segment_2D s,int size) {
+      Point_2D []points=new Point_2D[size];
+        for (int i=0;i<size;i++)
+        {
+            double t=(double) i/(size-1);
+            double x=s.get_p1().x()+t*(s.get_p2().x()-s.get_p1().x());
+            double y=s.get_p1().y()+t*(s.get_p2().y()-s.get_p1().y());
+
+        }
+    }
